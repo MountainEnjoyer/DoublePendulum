@@ -2,13 +2,14 @@
 #include <string.h>
 #include <raylib.h>
 #include <math.h>
+#include <time.h>
 
 #define HEIGHT 600
 #define WIDTH 900
 
 #define MASS_RADIUS 20
 #define LINE1 250
-#define LINE2 125
+#define LINE2 150
 #define LINE_THICKNESS 4
 #define G 981
 #define TRACE_LEN 200
@@ -76,10 +77,11 @@ void step(float dt) {
 }
 
 void initSolver(){
+  SetRandomSeed(time(NULL));
   l1 = LINE1;
   l2 = LINE2;
-  phi1 = GetRandomValue(-90, 90)*DEG2RAD;
-  phi2 = GetRandomValue(-90, 90)*DEG2RAD;
+  phi1 = GetRandomValue(0, 360)*DEG2RAD;
+  phi2 = GetRandomValue(0, 360)*DEG2RAD;
   phi1_d = 0;
   phi2_d = 0;
   m1 = 1;
@@ -95,6 +97,10 @@ int main (int argc, int *argv[]) {
   initSolver();
   while (!WindowShouldClose()) {
     step(GetFrameTime());
+    if (IsKeyPressed(KEY_SPACE)) {
+      initSolver();
+      current_trace_length = 0;
+    }
     BeginDrawing();
     
     ClearBackground(BLACK);

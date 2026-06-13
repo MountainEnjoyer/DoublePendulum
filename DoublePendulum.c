@@ -5,10 +5,13 @@
 #define HEIGHT 600
 #define WIDTH 900
 
+#define MASS_RADIUS 10
+
 void draw_pendulum(float l, Vector2 start, float phi) {
   
   Vector2 end = (Vector2) {start.x + l * sinf(phi), start.y + l * cosf(phi)};
   DrawLineV(start, end, WHITE);
+  DrawCircleV(end, MASS_RADIUS, RED);
 
 }
 
@@ -23,7 +26,7 @@ int main (int argc, int *argv[]) {
     BeginDrawing();
   
     ClearBackground(BLACK);
-    draw_pendulum(HEIGHT/3*2, start_pos, 0.5);
+    draw_pendulum(HEIGHT/3, start_pos, 18*DEG2RAD);
     EndDrawing();
   }
 

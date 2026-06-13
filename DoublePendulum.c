@@ -51,8 +51,10 @@ void draw_double_pendulum(Vector2 start, float phi1, float phi2, float l1, float
     trace[i] = trace_copy[i-1];
   }
   trace[0] = end_l2;
+  Color color = RED;
   for (int i = 1; i< current_trace_length; ++i) {
-    DrawRectangleV(trace[i], (Vector2){TRACE_THICKNESS, TRACE_THICKNESS}, RED);
+    color.a = (unsigned char)((float)0xFF * ( 1 - (float) i / (float) current_trace_length));
+    DrawRectangleV(trace[i], (Vector2){TRACE_THICKNESS, TRACE_THICKNESS}, color);
   }
 }
 

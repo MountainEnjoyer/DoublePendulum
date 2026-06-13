@@ -1,4 +1,7 @@
 # DoublePendulum
 Simulation of a double pendulum using differential equation and Raylib.
 
-https://github.com/user-attachments/assets/baba3f40-2afe-4397-bae5-19562a13ccaa
+
+
+https://github.com/user-attachments/assets/bbf860b2-dca0-45b4-9a17-162113feaf14
+

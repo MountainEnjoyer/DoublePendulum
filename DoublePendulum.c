@@ -10,6 +10,10 @@
 #define LINE2 250
 #define LINE_THICKNESS 4
 
+#define G 1
+
+float l1,l2,phi1,phi2,phi1_d, phi2_d, phi1_dd, phi2_dd, m1, m2;
+
 Vector2 start_pos = (Vector2) {WIDTH/2, 0};
 
 Vector2 get_end(Vector2 start, float l, float phi){
@@ -30,17 +34,47 @@ void draw_double_pendulum(Vector2 start, float phi1, float phi2, float l1, float
   draw_pendulum(l1,start, phi1);
 }
 
+void step() {
+  // angular acceleration (according to differential equations)
+  phi1_dd = (-G*(2*m1+m2)*sinf(phi1)-m2*G*sinf(phi1-2*phi2)-2*sinf(phi1-phi2)*m2*(phi2_d*phi2_d*l2 + phi1_d*phi1_d*l1*cosf(phi1-phi2))) / (l1*(2*m1+m2-m2*cosf(2*phi1-2*phi2)));
+
+  phi2_dd = 2*sinf(phi1-phi2)*(phi1_d*phi1_d*l1*(m1+m2) + G * (m1+m2)*cosf(phi1) + phi2_d*phi2_d*l1*m2*cosf(phi1-phi2)) / (l2 * (2*m1+m2-m2*cosf(2*phi1-2*phi2)));
+
+  // anular velocity
+  phi1_d += phi1_dd;
+  phi2_d += phi2_dd;
+
+  //angle itself
+  phi1 += phi1_d;
+  phi2 += phi2_d;
+
+
+}
+
+void initSolver(){
+  l1 = LINE1;
+  l2 = LINE2;
+  phi1 = GetRandomValue(-90, 90)*DEG2RAD;
+  phi2 = GetRandomValue(-90, 90)*DEG2RAD;
+  phi1_d = 0;
+  phi2_d = 0;
+  m1 = 1;
+  m2 = 2;
+}
+
 int main (int argc, int *argv[]) {
   
   InitWindow(WIDTH,HEIGHT, "DoublePendulum");
 
   SetTargetFPS(60);
-
-  while (!WindowShouldClose()) {
-    BeginDrawing();
   
+  initSolver();
+  while (!WindowShouldClose()) {
+    step();
+    BeginDrawing();
+    
     ClearBackground(BLACK);
-    draw_double_pendulum(start_pos, 50*DEG2RAD, -30*DEG2RAD, LINE1, LINE2);
+    draw_double_pendulum(start_pos, phi1, phi2, l1, l2);
     EndDrawing();
   }
 
